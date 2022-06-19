@@ -127,15 +127,15 @@ class _DropState extends State<Drop> {
             itemHeight: 65,
             borderRadius: BorderRadius.circular(30),
             value: _dropdownValue,
-            items: stringItems.map<DropdownMenuItem<int>>((String value) {
-              return DropdownMenuItem<int>(
-                value: 2,
+            items: stringItems.map((value) {
+              return DropdownMenuItem(
+                value: value,
                 child: getListTile(value),
               );
             }).toList(),
-            onChanged: (value) {
+            onChanged: (String? value) {
               setState(() {
-                _dropdownValue = value as String;
+                _dropdownValue = value;
               });
             },
           ),
