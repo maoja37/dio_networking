@@ -55,7 +55,11 @@ class _HomePageState extends State<HomePage> {
                   return Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image.network(userData.avatar),
+                      GestureDetector(
+                          onTap: (() => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => const Drop()))),
+                          child: Image.network(userData.avatar)),
                       const SizedBox(height: 8.0),
                       Text(
                         '${userInfo.data.firstName} ${userInfo.data.lastName}',
@@ -76,6 +80,90 @@ class _HomePageState extends State<HomePage> {
             return const CircularProgressIndicator();
           },
         ),
+      ),
+    );
+  }
+}
+
+class Drop extends StatefulWidget {
+  const Drop({Key? key}) : super(key: key);
+
+  @override
+  State<Drop> createState() => _DropState();
+}
+
+class _DropState extends State<Drop> {
+  @override
+  Widget build(BuildContext context) {
+    List<String> stringItems = [
+      'Abia 1',
+      'Adamawa',
+      'Akwa Ibom',
+      'Anambra',
+      'Abia',
+      'Adamawa',
+      'Akwa Ibom',
+      'Anambra'
+    ];
+    String? _dropdownValue;
+    return Scaffold(
+      appBar: AppBar(
+          title: const SafeArea(
+        child: SizedBox(
+          height: 20,
+        ),
+      )),
+      body: Center(
+        child: Card(
+          shape: const StadiumBorder(),
+          child: DropdownButton(
+            iconSize: 0,
+            hint: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: Text('Please choose a location'),
+            ),
+            isExpanded: true,
+            underline: Container(),
+            itemHeight: 65,
+            borderRadius: BorderRadius.circular(30),
+            value: _dropdownValue,
+            items: stringItems.map<DropdownMenuItem<int>>((String value) {
+              return DropdownMenuItem<int>(
+                value: 2,
+                child: getListTile(value),
+              );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                _dropdownValue = value as String;
+              });
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget getListTile(String value) {
+    return Container(
+      decoration: const BoxDecoration(color: Colors.transparent),
+      height: 100,
+      width: 380,
+      child: Column(
+        children: [
+          ListTile(
+            title: Text(value),
+            trailing: const Icon(
+              Icons.euro_symbol,
+              size: 15,
+            ),
+          ),
+          const Divider(
+            height: 5,
+            color: Colors.black,
+            indent: 0,
+          )
+        ],
       ),
     );
   }
