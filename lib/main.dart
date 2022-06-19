@@ -18,12 +18,14 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -35,44 +37,43 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Info'),
+        title: const Text('User Info'),
       ),
       body: Center(
         child: FutureBuilder<User?>(
           future: _client.getUser(id: '1'),
           builder: (context, snapshot) {
-            if(snapshot.connectionState == ConnectionState.waiting ){
-              print('waiting');
-              return CircularProgressIndicator();
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              debugPrint('waiting');
+              return const CircularProgressIndicator();
             }
-            if(snapshot.connectionState == ConnectionState.done){
+            if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasData) {
-              User? userInfo = snapshot.data;
-              if (userInfo != null) {
-                Data userData = userInfo.data;
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.network(userData.avatar),
-                    SizedBox(height: 8.0),
-                    Text(
-                      '${userInfo.data.firstName} ${userInfo.data.lastName}',
-                      style: TextStyle(fontSize: 16.0),
-                    ),
-                    Text(
-                      userData.email,
-                      style: TextStyle(fontSize: 16.0),
-                    ),
-                  ],
-                );
+                User? userInfo = snapshot.data;
+                if (userInfo != null) {
+                  Data userData = userInfo.data;
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.network(userData.avatar),
+                      const SizedBox(height: 8.0),
+                      Text(
+                        '${userInfo.data.firstName} ${userInfo.data.lastName}',
+                        style: const TextStyle(fontSize: 16.0),
+                      ),
+                      Text(
+                        userData.email,
+                        style: const TextStyle(fontSize: 16.0),
+                      ),
+                    ],
+                  );
+                }
+              } else {
+                debugPrint('no data');
               }
-            } else{
-              print('no data');
-              
             }
-            }
-            print('nothing done');
-            return CircularProgressIndicator();
+            debugPrint('nothing done');
+            return const CircularProgressIndicator();
           },
         ),
       ),

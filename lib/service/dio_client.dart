@@ -3,7 +3,6 @@ import 'package:dio_networking/model/user.dart';
 import 'package:flutter/cupertino.dart';
 
 class DioClient {
-
   final Dio _dio = Dio();
   final _baseUrl = 'https://reqres.in/api';
 
@@ -12,12 +11,13 @@ class DioClient {
     try {
       Response userData = await _dio.get(_baseUrl + '/users/$id');
       debugPrint('User Info: ${userData.data}');
-      User user = User.fromJson(userData.data);
+      user = User.fromJson(userData.data);
+      return user;
     } on DioError catch (e) {
       if (e.response != null) {
         debugPrint('Dio error!');
         debugPrint('STATUS: ${e.response!.statusCode}');
-       // debugPrint('DATA: ${e.response!.data}');
+        // debugPrint('DATA: ${e.response!.data}');
         debugPrint('HEADERS: ${e.response!.headers}');
       } else {
         // Error due to setting up or sending the request
@@ -27,7 +27,5 @@ class DioClient {
 
       return null;
     }
-
-    return user;
   }
 }
